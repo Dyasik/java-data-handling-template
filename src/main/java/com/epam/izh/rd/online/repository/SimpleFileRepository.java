@@ -120,8 +120,8 @@ public class SimpleFileRepository implements FileRepository {
             throw new IllegalArgumentException("Arguments should be not null.");
         }
 
-        File dir = new File(Objects.requireNonNull(classLoader.getResource(path)).getFile());
-        String relativePath = dir.getPath() + File.separator + name;
+        File resourceDir = new File(Objects.requireNonNull(classLoader.getResource("")).getFile());
+        File dir = new File(resourceDir.getPath() + File.separator + path);
 
         if (!dir.exists()) {
             boolean mkdirSuccess = dir.mkdir();
@@ -134,6 +134,8 @@ public class SimpleFileRepository implements FileRepository {
             System.err.println(path + " already exists and it's not a directory");
             return false;
         }
+
+        String relativePath = dir.getPath() + File.separator + name;
 
         try {
             Files.createFile(Paths.get(relativePath));
