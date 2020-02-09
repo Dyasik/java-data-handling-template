@@ -55,7 +55,7 @@ public class DateServiceTest {
                 .findFirst()
                 .getAsInt();
 
-        assertEquals(2020, dateService.getNextLeapYear(),
+        assertEquals(year, dateService.getNextLeapYear(),
                 "Для вызова метода: dateService.getNextLeapYear()");
     }
 
