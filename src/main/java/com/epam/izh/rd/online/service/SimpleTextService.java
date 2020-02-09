@@ -12,8 +12,21 @@ public class SimpleTextService implements TextService {
      * @param remove - строка которую необходимо удалить
      */
     @Override
-    public String removeString(String base, String remove) {
-        return null; //TODO
+    public String removeString(String base, String remove) throws IllegalArgumentException {
+        if (base == null || remove == null) {
+            throw new IllegalArgumentException("All arguments should be not null.");
+        }
+
+        // this may fail for regex-like `remove` argument
+        // return base.replaceAll(remove, "");
+
+        String result = base;
+
+        while (result.contains(remove)) {
+            result = result.replace(remove, "");
+        }
+
+        return result;
     }
 
     /**
@@ -23,8 +36,12 @@ public class SimpleTextService implements TextService {
      * Например для строки "Hello, hello, hello!" метод вернет false
      */
     @Override
-    public boolean isQuestionString(String text) {
-        return false; //TODO
+    public boolean isQuestionString(String text) throws IllegalArgumentException {
+        if (text == null) {
+            throw new IllegalArgumentException("Argument should be not null.");
+        }
+
+        return text.endsWith("?");
     }
 
     /**
@@ -35,7 +52,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String concatenate(String... elements) {
-        return null; //TODO
+        return String.join("", elements);
     }
 
     /**
@@ -46,8 +63,20 @@ public class SimpleTextService implements TextService {
      * метод вернет "lOaD Up oN GuNs aNd bRiNg yOuR FrIeNdS".
      */
     @Override
-    public String toJumpCase(String text) {
-        return null; //TODO
+    public String toJumpCase(String text) throws IllegalArgumentException {
+        if (text == null) {
+            throw new IllegalArgumentException("Argument should be not null.");
+        }
+
+        StringBuilder result = new StringBuilder(text.length());
+        boolean lowerCase = true;
+
+        for (char c : text.toCharArray()) {
+            result.append(lowerCase ? Character.toLowerCase(c) : Character.toUpperCase(c));
+            lowerCase = !lowerCase;
+        }
+
+        return result.toString();
     }
 
     /**
@@ -59,6 +88,16 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isPalindrome(String string) {
-       return false; //TODO
+        if (string == null) {
+            throw new IllegalArgumentException("Argument should be not null.");
+        }
+
+        if (string.length() == 0) {
+            return false;
+        }
+
+        String stringWithoutSpaces = string.replaceAll("\\s", "");
+
+        return stringWithoutSpaces.equalsIgnoreCase(new StringBuilder(stringWithoutSpaces).reverse().toString());
     }
 }
