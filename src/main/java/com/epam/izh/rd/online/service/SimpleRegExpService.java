@@ -1,6 +1,11 @@
 package com.epam.izh.rd.online.service;
 
+import com.epam.izh.rd.online.repository.FileRepository;
+import com.epam.izh.rd.online.repository.SimpleFileRepository;
+
 public class SimpleRegExpService implements RegExpService {
+
+    private static FileRepository fileRepository = new SimpleFileRepository();
 
     /**
      * Метод должен читать файл sensitive_data.txt (из директории resources) и маскировать в нем конфиденциальную информацию.
@@ -11,7 +16,8 @@ public class SimpleRegExpService implements RegExpService {
      */
     @Override
     public String maskSensitiveData() {
-        return null;
+        return fileRepository.readFileFromResources("sensitive_data.txt")
+            .replaceAll("(\\d{4} )(\\d{4} ){2}(\\d{4})", "$1**** **** $3");
     }
 
     /**
@@ -22,6 +28,8 @@ public class SimpleRegExpService implements RegExpService {
      */
     @Override
     public String replacePlaceholders(double paymentAmount, double balance) {
-        return null;
+        return fileRepository.readFileFromResources("sensitive_data.txt")
+            .replaceAll("\\$\\{payment_amount}", String.format("%.0f", paymentAmount))
+            .replaceAll("\\$\\{balance}", String.format("%.0f", balance));
     }
 }
